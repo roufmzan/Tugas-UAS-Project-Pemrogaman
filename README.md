@@ -4,7 +4,7 @@
 ### Kelas : TI.24.A1
 ### NIM : 312410157
 
-## Program akan meminta masukan data yang terdiri dari nama produk, harga produk, dan jumlah stok produk.
+## Program akan meminta masukan input yang terdiri dari beli tiket, tambah member, lihat daftar member dan riwayat pembelian tiket.
 ![output](output.png)
 ## Class Data
 ## _init.py
