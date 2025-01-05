@@ -5,7 +5,7 @@
 ### NIM : 312410157
 
 ## Program akan meminta masukan data yang terdiri dari nama produk, harga produk, dan jumlah stok produk.
-![output UAS project](https://github.com/user-attachments/assets/3a81cfd1-d824-49ad-95c1-c78e24f1b830)
+![output](output.png)
 ## Class Data
 ## _init.py
 ```Python
