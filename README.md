@@ -9,96 +9,209 @@
 ## _init.py
 ```Python
 # class_data/__init__.py
-from .class_data import Produk
+from .class_data import Data
 ```
 ## class_data.py
 ```Python
-# class_data/class_data.py
-class Produk:
-    def __init__(self, nama, harga, stok):
-        self.nama = nama
-        self.harga = harga
-        self.stok = stok
+import random
+
+class Data:
+    def __init__(self):
+        self.database_member = {}
+        self.riwayat_pembelian = []
+
+    def generate_card_number(self):
+        """Menghasilkan nomor kartu member secara acak."""
+        return f"MC-{random.randint(1000, 9999)}"
+
+    def tambah_member(self, nama):
+        """Menambahkan nama member ke dalam database."""
+        if nama not in self.database_member:
+            nomor_kartu = self.generate_card_number()
+            self.database_member[nama] = nomor_kartu
+            return f"{nama} telah ditambahkan sebagai member dengan nomor kartu {nomor_kartu}."
+        else:
+            return f"{nama} sudah terdaftar sebagai member."
+
+    def daftar_member(self):
+        """Menampilkan daftar member yang terdaftar."""
+        if self.database_member:
+            return self.database_member
+        else:
+            return "Belum ada member yang terdaftar."
+
+    def simpan_riwayat(self, pembelian):
+        """Menyimpan riwayat pembelian."""
+        self.riwayat_pembelian.append(pembelian)
+
+    def lihat_riwayat(self):
+        """Menampilkan riwayat pembelian tiket."""
+        return self.riwayat_pembelian
 ```
 ## Class Process
 ## _init.py
 ```Python
 # class_process/__init__.py
-from .class_process import ProdukProcess
+from .class_process import Process
 ```
 ## class_process.py
 ```Python
-# class_process/class_process.py
-from class_data import Produk
+class Process:
+    def __init__(self, data):
+        self.data = data
 
-class ProdukProcess:
-    def __init__(self):
-        self.produk_list = []
+    def hitung_harga_tiket(self, tipe_tiket, status_member):
+        """Menghitung harga tiket bioskop berdasarkan tipe dan status member."""
+        harga_dasar = 50000 if tipe_tiket == "1" else 100000
+        diskon = 0.2 if status_member == "ya" else 0
+        total_harga = harga_dasar - (harga_dasar * diskon)
+        return total_harga, harga_dasar, diskon
 
-    def tambah_produk(self, nama, harga, stok):
-        if not nama:
-            raise ValueError("Nama produk tidak boleh kosong.")
-        if harga <= 0:
-            raise ValueError("Harga produk harus lebih besar dari 0.")
-        if stok < 0:
-            raise ValueError("Stok produk tidak boleh negatif.")
-        
-        produk = Produk(nama, harga, stok)
-        self.produk_list.append(produk)
-
-    def get_produk(self):
-        return self.produk_list
+    def beli_tiket(self, tipe_tiket, status_member, jumlah_tiket):
+        """Mengelola pembelian tiket."""
+        total_harga = 0
+        for _ in range(jumlah_tiket):
+            harga, harga_dasar, diskon = self.hitung_harga_tiket(tipe_tiket, status_member)
+            total_harga += harga
+        return total_harga
 ```
 ## Class View
 ##  _init.py
 ```Python
-# class_view/__init__.py
-from .class_view import ProdukView
+# class view/__init__.py
+from .class_view import View
 ```
 ## class_view.py
 ```Python
-# class_view/class_view.py
-class ProdukView:
-    def tampilkan_produk(self, produk_list):
-        print(f"{'Nama Produk':<20} {'Harga':<10} {'Stok':<10}")
-        print("-" * 40)
-        for produk in produk_list:
-            print(f"{produk.nama:<20} {produk.harga:<10.2f} {produk.stok:<10}")
+class View:
+    @staticmethod
+    def display_message(message):
+        print(message)
+
+    @staticmethod
+    def display_member_list(members):
+        print("\n=== Daftar Member ===")
+        print(f"{'Nama Member':<20} {'Nomor Kartu':<15}")
+        print("=" * 35)
+        
+        for member, nomor_kartu in members.items():
+            print(f"{member:<20} {nomor_kartu:<15}")
+
+    @staticmethod
+    def display_purchase_history(history):
+        print("\n=== Riwayat Pembelian Tiket ===")
+        print(f"{'No':<5} {'Tipe Tiket':<20} {'Status Member':<15} {'Jumlah Tiket':<15} {'Total Harga':<15}")
+        print("=" * 80)
+        
+        for index, pembelian in enumerate(history, start=1):
+            print(f"{index:<5} {pembelian['tipe_tiket']:<20} {'Ya' if pembelian['status_member'] == 'ya' else 'Tidak':<15} {pembelian['jumlah_tiket']:<15} Rp{pembelian['total_harga']:,.0f}")
+
+    @staticmethod
+    def display_ticket_receipt(pembelian):
+        print("\n=== Struk Pembelian Tiket ===")
+        print(f"{'Detail':<30} {'Informasi':<15}")
+        print("=" * 50)
+        
+        print(f"{'Tipe Tiket':<30} {pembelian['tipe_tiket']:<15}")
+        print(f"{'Status Member':<30} {'Ya' if pembelian['status_member'] == 'ya' else 'Tidak':<15}")
+        print(f"{'Jumlah Tiket':<30} {pembelian['jumlah_tiket']:<15}")
+        
+        # Hitung total harga awal
+        total_harga_awal = pembelian['total_harga']
+        print(f"{'Total Harga Awal':<30} Rp{total_harga_awal:,.0f}")
+
+        # Hitung potongan harga jika member
+        if pembelian['status_member'] == 'ya':
+            potongan_harga = total_harga_awal * 0.2  # Potongan 20%
+            total_harga_setelah_diskon = total_harga_awal - potongan_harga
+            print(f"{'Potongan Harga':<30} Rp{potongan_harga:,.0f}")
+            print(f"{'Total Harga Setelah Diskon':<30} Rp{total_harga_setelah_diskon:,.0f}")
+        else:
+            print(f"{'Total Harga':<30} Rp{total_harga_awal:,.0f}")
+
+        print("Terima kasih telah membeli tiket!")
 ```
 ## main.py
 ```Python
-from class_data import Produk
-from class_process import ProdukProcess
-from class_view import ProdukView
+from class_data import Data
+from class_view import View
+from class_process import Process
 
 def main():
-    process = ProdukProcess()  # Membuat instance dari ProdukProcess
-    view = ProdukView()        # Membuat instance dari ProdukView
+    data = Data()
+    process = Process(data)
 
     while True:
-        try:
-            # Meminta input nama produk
-            nama = input("Masukkan nama produk (atau ketik 'exit' untuk keluar): ")
-            if nama.lower() == 'exit':
-                break
-            
-            # Meminta input harga produk
-            harga = float(input("Masukkan harga produk: "))
-            
-            # Meminta input stok produk
-            stok = int(input("Masukkan stok produk: "))
-            
-            # Menambahkan produk ke dalam daftar
-            process.tambah_produk(nama, harga, stok)
-        except ValueError as e:
-            print(f"Error: {e}")
+        print("\n=== Menu Utama ===")
+        print("1. Beli Tiket")
+        print("2. Tambah Member")
+        print("3. Lihat Daftar Member")
+        print("4. Lihat Riwayat Pembelian Tiket")
+        print("5. Keluar")
 
-    # Tampilkan data produk
-    print("\nDaftar Produk:")
-    view.tampilkan_produk(process.get_produk())
+        pilihan = input("Pilih menu (1/2/3/4/5): ")
+        if pilihan == "1":
+            # Logika untuk membeli tiket
+            tipe_tiket = input("Masukkan tipe tiket (1 untuk Reguler, 2 untuk VIP): ")
+            status_member = input("Apakah Anda memiliki kartu member? (ya/tidak): ").lower()
+            
+            if status_member == 'ya':
+                nama_member = input("Masukkan nama member: ")
+                nomor_kartu = input("Masukkan nomor kartu member: ")
+                
+                # Verifikasi member
+                members = data.daftar_member()  # Ambil daftar member
+                if (nama_member not in members) or (nomor_kartu != members[nama_member]):
+                    View.display_message("Nama atau nomor kartu member tidak terdaftar. Anda tidak dapat menggunakan status member.")
+                    status_member = 'tidak'  # Set status_member ke 'tidak' jika tidak terdaftar
+
+            # Validasi jumlah tiket
+            while True:
+                try:
+                    jumlah_tiket = int(input("Masukkan jumlah tiket yang ingin dibeli: "))
+                    if jumlah_tiket > 0:
+                        break
+                    else:
+                        print("Jumlah tiket harus lebih dari 0.")
+                except ValueError:
+                    print("Input tidak valid! Silakan masukkan angka.")
+
+            # Hitung total harga
+            total_harga = process.beli_tiket(tipe_tiket, status_member, jumlah_tiket)
+            
+            # Simpan riwayat pembelian
+            pembelian = {
+                'tipe_tiket': 'Reguler' if tipe_tiket == "1" else 'VIP',
+                'status_member': status_member,
+                'jumlah_tiket': jumlah_tiket,
+                'total_harga': total_harga
+            }
+            data.simpan_riwayat(pembelian)
+            
+            # Tampilkan total harga
+            View.display_message(f"Total harga untuk {jumlah_tiket} tiket: Rp{total_harga:,.0f}")
+            
+            # Tampilkan struk pembelian
+            View.display_ticket_receipt(pembelian)
+            
+        elif pilihan == "2":
+            nama = input("Masukkan nama member: ")
+            message = data.tambah_member(nama)
+            View.display_message(message)
+        elif pilihan == "3":
+            members = data.daftar_member()
+            View.display_member_list(members)
+        elif pilihan == "4":
+            history = data.lihat_riwayat()
+            View.display_purchase_history(history)
+        elif pilihan == "5":
+            View.display_message("Terima kasih! Sampai jumpa.")
+            break
+        else:
+            View.display_message("Pilihan tidak valid! Silakan pilih menu yang tersedia.")
 
 if __name__ == "__main__":
-    main()
+    main()  # Pastikan untuk memanggil fungsi main dengan tanda kurung
 ```
 # Penjelasan Code
 Input Data Produk
