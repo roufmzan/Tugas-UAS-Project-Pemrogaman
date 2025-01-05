@@ -215,16 +215,110 @@ if __name__ == "__main__":
     main()  # Pastikan untuk memanggil fungsi main dengan tanda kurung
 ```
 # Penjelasan Code
-Input Data Produk
+class data:
+1. Import Library
+import random: Mengimpor modul random untuk menghasilkan angka acak.
+2. Definisi Kelas
+class Data:: Mendefinisikan kelas Data yang akan mengelola informasi anggota dan riwayat pembelian.
+3. Inisialisasi Kelas
+def __init__(self):: Metode konstruktor yang dipanggil saat objek dari kelas Data dibuat.
+self.database_member = {}: Inisialisasi dictionary untuk menyimpan nama anggota dan nomor kartu mereka.
+self.riwayat_pembelian = []: Inisialisasi list untuk menyimpan riwayat pembelian anggota.
+4. Metode generate_card_number
+def generate_card_number(self):: Metode untuk menghasilkan nomor kartu member.
+return f"MC-{random.randint(1000, 9999)}": Menghasilkan nomor kartu dengan format "MC-XXXX", di mana XXXX adalah angka acak antara 1000 dan 9999.
+5. Metode tambah_member
+def tambah_member(self, nama):: Metode untuk menambahkan anggota baru.
+if nama not in self.database_member:: Memeriksa apakah nama anggota sudah terdaftar.
+nomor_kartu = self.generate_card_number(): Menghasilkan nomor kartu baru jika nama belum terdaftar.
+self.database_member[nama] = nomor_kartu: Menambahkan nama dan nomor kartu ke dalam database.
+return f"{nama} telah ditambahkan sebagai member dengan nomor kartu {nomor_kartu}.": Mengembalikan pesan sukses.
+else:: Jika nama sudah terdaftar.
+return f"{nama} sudah terdaftar sebagai member.": Mengembalikan pesan bahwa anggota sudah ada.
+6. Metode daftar_member
+def daftar_member(self):: Metode untuk menampilkan daftar anggota.
+if self.database_member:: Memeriksa apakah ada anggota yang terdaftar.
+return self.database_member: Mengembalikan dictionary anggota.
+else:: Jika tidak ada anggota.
+return "Belum ada member yang terdaftar.": Mengembalikan pesan bahwa belum ada anggota.
+7. Metode simpan_riwayat
+def simpan_riwayat(self, pembelian):: Metode untuk menyimpan riwayat pembelian.
+self.riwayat_pembelian.append(pembelian): Menambahkan pembelian ke dalam list riwayat pembelian.
+8. Metode lihat_riwayat
+def lihat_riwayat(self):: Metode untuk menampilkan riwayat pembelian.
+return self.riwayat_pembelian: Mengembalikan list riwayat pembelian.
 
-Saat menjalankan program, pengguna akan diminta untuk memberikan informasi mengenai nama produk, harga, dan stok yang tersedia. Input Data Produk
-1. Inisiasi Input: Program memulai dengan menampilkan prompt yang meminta pengguna untuk memasukkan nama produk.
-2. Input Nama Produk: Pengguna memasukkan nama produk melalui perangkat input standar (misalnya, keyboard). Nama produk direpresentasikan sebagai string.
-3. Validasi Input Nama (Opsional): Sistem dapat menerapkan validasi untuk memastikan nama produk tidak kosong atau memenuhi kriteria tertentu (misalnya, panjang karakter, format).
-4. Input Harga Produk: Setelah nama produk diinput, program meminta pengguna untuk memasukkan harga produk. Harga produk direpresentasikan sebagai tipe data numerik (biasanya float atau decimal untuk menangani nilai desimal).
-5. Validasi Input Harga (Penting): Validasi sangat disarankan pada tahap ini untuk memastikan input harga berupa angka valid dan biasanya bernilai positif. Penanganan kesalahan (error handling) diperlukan untuk mencegah program berhenti jika input tidak valid.
-6. Input Stok Produk: Program meminta pengguna untuk memasukkan jumlah stok produk. Stok direpresentasikan sebagai tipe data integer.
-7. Validasi Input Stok (Penting): Validasi juga disarankan untuk input stok, memastikan input berupa angka integer dan biasanya bernilai non-negatif.
-8. Penyimpanan Data: Data yang telah diinput (nama, harga, dan stok) disimpan dalam sebuah struktur data yang sesuai.
-9. Pengulangan Input: Proses input (langkah 2-8) diulang sampai pengguna memberikan sinyal untuk berhenti. Sinyal ini biasanya berupa input khusus, seperti kata kunci "exit" atau perintah lainnya.
-10. Terminasi Input: Setelah pengguna memberikan sinyal berhenti, proses input data diakhiri.
+class prosess:
+1. Metode __init__
+Fungsi: Konstruktor yang dipanggil saat objek dari kelas Process dibuat.
+Parameter:
+data: Parameter ini disimpan dalam atribut self.data, tetapi tidak digunakan dalam metode lain.
+2. Metode hitung_harga_tiket
+Fungsi: Menghitung harga tiket bioskop berdasarkan tipe tiket dan status keanggotaan.
+Parameter:
+tipe_tiket: Menentukan jenis tiket (1 atau lainnya).
+status_member: Menentukan apakah pembeli adalah member ("ya" atau tidak).
+Proses:
+Menentukan harga_dasar:
+50.000 jika tipe_tiket adalah "1".
+100.000 jika tipe_tiket bukan "1".
+Menentukan diskon:
+20% (0.2) jika status_member adalah "ya".
+0% jika tidak.
+Menghitung total_harga dengan rumus:
+total_harga = harga_dasar - (harga_dasar * diskon).
+Output: Mengembalikan tiga nilai:
+total_harga: Harga setelah diskon.
+harga_dasar: Harga dasar tiket.
+diskon: Besaran diskon yang diterapkan.
+3. Metode beli_tiket
+Fungsi: Mengelola pembelian tiket dalam jumlah tertentu.
+Parameter:
+tipe_tiket: Jenis tiket yang ingin dibeli.
+status_member: Status keanggotaan pembeli.
+jumlah_tiket: Jumlah tiket yang ingin dibeli.
+Proses:
+Menginisialisasi total_harga menjadi 0.
+Melakukan iterasi sebanyak jumlah_tiket:
+Memanggil hitung_harga_tiket untuk mendapatkan harga tiket.
+Menambahkan harga tiket ke total_harga.
+Output: Mengembalikan total_harga, yaitu total biaya yang harus dibayar untuk tiket yang dibeli.
+
+class view:
+1. Metode display_message
+Fungsi: Menampilkan pesan yang diberikan.
+Parameter:
+message: Pesan yang ingin ditampilkan.
+Output: Mencetak pesan ke konsol.
+2. Metode display_member_list
+Fungsi: Menampilkan daftar member dan nomor kartu mereka.
+Parameter:
+members: Dictionary yang berisi nama member sebagai kunci dan nomor kartu sebagai nilai.
+Output:
+Mencetak header "Daftar Member".
+Mencetak tabel dengan dua kolom: "Nama Member" dan "Nomor Kartu".
+Menampilkan setiap member dan nomor kartunya dalam format yang rapi.
+3. Metode display_purchase_history
+Fungsi: Menampilkan riwayat pembelian tiket.
+Parameter:
+history: List yang berisi informasi pembelian tiket, di mana setiap item adalah dictionary dengan detail pembelian.
+Output:
+Mencetak header "Riwayat Pembelian Tiket".
+Mencetak tabel dengan kolom: "No", "Tipe Tiket", "Status Member", "Jumlah Tiket", dan "Total Harga".
+Menampilkan setiap pembelian dengan format yang rapi, termasuk konversi total harga ke format mata uang.
+4. Metode display_ticket_receipt
+Fungsi: Menampilkan struk pembelian tiket.
+Parameter:
+pembelian: Dictionary yang berisi detail pembelian tiket, termasuk tipe tiket, status member, jumlah tiket, dan total harga.
+Output:
+Mencetak header "Struk Pembelian Tiket".
+Menampilkan detail pembelian dalam format yang rapi:
+Tipe tiket
+Status member (Ya/Tidak)
+Jumlah tiket
+Total harga awal
+Jika pembeli adalah member, menghitung dan menampilkan:
+Potongan harga (20%)
+Total harga setelah diskon
+Jika bukan member, hanya menampilkan total harga awal.
+Mencetak pesan terima kasih setelah struk selesai.
