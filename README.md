@@ -6,6 +6,10 @@
 
 ## Program akan meminta masukan input yang terdiri dari beli tiket, tambah member, lihat daftar member dan riwayat pembelian tiket.
 ![output](output.png)
+
+### LINK VIDIO YOUTUBE
+https://youtu.be/-4NfvAPDNSo?si=3uH6WmsLE-h1p3eP
+
 ## Class Data
 ## _init.py
 ```Python
